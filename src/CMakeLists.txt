@@ -9,7 +9,7 @@ set(HEADERS
     ${HEADER_PATH}/imgui.h
     ${HEADER_PATH}/SendEventsToImGui.h
     ${HEADER_PATH}/RenderImGui.h
-    ${HEADER_PATH}/Texture.h
+    ${HEADER_PATH}/Texture.h	
     imgui/imconfig.h
     imgui/imgui_internal.h
     imgui/imstb_rectpack.h
@@ -18,6 +18,18 @@ set(HEADERS
     imgui/misc/cpp/imgui_stdlib.h
     implot/implot.h
     implot/implot_internal.h
+    imguifiledialog/ImGuiFileDialog.h
+    imguifiledialog/ImGuiFileDialogConfig.h
+    imguizmo/ImGuizmo.h
+    imguizmo/ImSequencer.h
+    imnodes/imnodes.h
+    imnodes/imnodes_internal.h
+	imtools/AbstractPane.h
+	imtools/ImWidgets.h
+	imtools/LayoutManager.h
+	imtools/Messaging.h
+	imtools/ThemeHelper.h	
+    foaw/foaw.h
 )
 
 set(SOURCES
@@ -33,9 +45,17 @@ set(SOURCES
     imgui/misc/cpp/imgui_stdlib.cpp
     implot/implot.cpp
     implot/implot_demo.cpp
-    implot/implot_items.cpp
+    implot/implot_items.cpp	
+    imguifiledialog/ImGuiFileDialog.cpp
+    imguizmo/ImGuizmo.cpp
+    imnodes/imnodes.cpp
+    imguizmo/ImSequencer.cpp
+	imtools/ImWidgets.cpp
+	imtools/LayoutManager.cpp
+	imtools/Messaging.cpp
+	imtools/ThemeHelper.cpp
+    foaw/foaw.cpp
 )
-
 
 add_library(vsgImGui ${HEADERS} ${SOURCES})
 
@@ -51,7 +71,9 @@ set_property(TARGET vsgImGui PROPERTY SOVERSION ${VSGIMGUI_SOVERSION})
 set_property(TARGET vsgImGui PROPERTY POSITION_INDEPENDENT_CODE ON)
 set_property(TARGET vsgImGui PROPERTY CXX_STANDARD 17)
 
-target_compile_definitions(vsgImGui PRIVATE ${EXTRA_DEFINES})
+target_compile_definitions(vsgImGui PRIVATE 
+    ${EXTRA_DEFINES}
+    -DIMGUI_DEFINE_MATH_OPERATORS)
 
 target_include_directories(vsgImGui PUBLIC
     $<BUILD_INTERFACE:${VSGIMGUI_SOURCE_DIR}/include>

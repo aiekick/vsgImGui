@@ -46,8 +46,7 @@ SendEventsToImGui::~SendEventsToImGui()
 
 uint32_t SendEventsToImGui::_convertButton(uint32_t button)
 {
-    return button == 1 ? 0 : button == 3 ? 1
-                                         : button;
+    return button == 1 ? 0 : button == 3 ? 1 : button;
 }
 
 void SendEventsToImGui::_initKeymap()
