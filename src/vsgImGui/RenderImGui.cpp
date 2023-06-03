@@ -23,6 +23,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #include <vsgImGui/RenderImGui.h>
 #include <vsgImGui/implot.h>
+#include <vsgImGui/ImGuizmo.h>
+#include <vsgImGui/imnodes.h>
 
 #include "../imgui/backends/imgui_impl_vulkan.h"
 
@@ -75,6 +77,7 @@ RenderImGui::RenderImGui(vsg::ref_ptr<vsg::Device> device, uint32_t queueFamily,
 RenderImGui::~RenderImGui()
 {
     ImGui_ImplVulkan_Shutdown();
+    ImNodes::DestroyContext();
     ImPlot::DestroyContext();
     ImGui::DestroyContext();
 }
@@ -120,6 +123,7 @@ void RenderImGui::_init(
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImPlot::CreateContext();
+    ImNodes::CreateContext();
 
     VkSampleCountFlagBits samples = VK_SAMPLE_COUNT_1_BIT;
     for (auto& attachment : renderPass->attachments)
@@ -215,6 +219,7 @@ void RenderImGui::accept(vsg::RecordTraversal& rt) const
     // record all the ImGui commands to ImDrawData container
     ImGui_ImplVulkan_NewFrame();
     ImGui::NewFrame();
+    ImGuizmo::BeginFrame();
 
     // traverse children
     traverse(rt);

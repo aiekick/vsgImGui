@@ -50,7 +50,6 @@ vsg_copy_imgui_headers(
         ${VSGIMGUI_SOURCE_DIR}/src/implot/implot.h
         ${VSGIMGUI_SOURCE_DIR}/src/implot/implot_internal.h	
 		${VSGIMGUI_SOURCE_DIR}/src/imguifiledialog/ImGuiFileDialog.h
-		${VSGIMGUI_SOURCE_DIR}/src/imguifiledialog/ImGuiFileDialogConfig.h
 		${VSGIMGUI_SOURCE_DIR}/src/imguizmo/ImGuizmo.h
 		${VSGIMGUI_SOURCE_DIR}/src/imguizmo/ImSequencer.h
 		${VSGIMGUI_SOURCE_DIR}/src/imnodes/imnodes.h
