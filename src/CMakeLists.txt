@@ -29,7 +29,8 @@ set(HEADERS
 	imtools/LayoutManager.h
 	imtools/Messaging.h
 	imtools/ThemeHelper.h	
-    foaw/foaw.h
+    fonts/foaw.h
+    fonts/Roboto_Medium.h
 )
 
 set(SOURCES
@@ -54,7 +55,8 @@ set(SOURCES
 	imtools/LayoutManager.cpp
 	imtools/Messaging.cpp
 	imtools/ThemeHelper.cpp
-    foaw/foaw.cpp
+    fonts/foaw.cpp
+    fonts/Roboto_Medium.cpp
 )
 
 add_library(vsgImGui ${HEADERS} ${SOURCES})
@@ -73,7 +75,9 @@ set_property(TARGET vsgImGui PROPERTY CXX_STANDARD 17)
 
 target_compile_definitions(vsgImGui PRIVATE 
     ${EXTRA_DEFINES}
-    -DIMGUI_DEFINE_MATH_OPERATORS)
+    -DIMGUI_DEFINE_MATH_OPERATORS
+    -DUSE_DECORATIONS_FOR_RESIZE_CHILD_WINDOWS
+)
 
 target_include_directories(vsgImGui PUBLIC
     $<BUILD_INTERFACE:${VSGIMGUI_SOURCE_DIR}/include>

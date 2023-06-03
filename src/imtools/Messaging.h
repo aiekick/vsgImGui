@@ -94,14 +94,7 @@ public:
 	void ClearInfos();
 	void Clear();
 
-public: // singleton
-	static Messaging *Instance()
-	{
-		static Messaging _instance;
-		return &_instance;
-	}
-
-protected:
+public:
 	Messaging(); // Prevent construction
 	Messaging(const Messaging&) {}; // Prevent construction by copying
 	Messaging& operator =(const Messaging&) { return *this; }; // Prevent assignment

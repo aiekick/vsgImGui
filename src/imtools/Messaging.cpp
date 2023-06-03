@@ -103,7 +103,7 @@ void Messaging::Draw()
 
 	if (ImGui::MenuItem(ICON_FOAW_REFRESH "##Refresh"))
 	{
-		Messaging::Instance()->Clear();
+		Clear();
 	}
 
 	if (!puMessages.empty())

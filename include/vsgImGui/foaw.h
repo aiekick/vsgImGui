@@ -4,7 +4,9 @@
 
 #pragma once
 
-#define FONT_ICON_BUFFER_NAME_FOAW FOAW_compressed_data_base85
+const char* FOAW_getCompressedBase85Datas();
+
+#define FONT_ICON_BUFFER_NAME_FOAW FOAW_getCompressedBase85Datas()
 #define FONT_ICON_BUFFER_SIZE_FOAW 0x34e31
 
 #define ICON_MIN_FOAW 0x9

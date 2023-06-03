@@ -32,6 +32,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <vsg/vk/State.h>
 #include <vsg/vk/SubmitCommands.h>
 
+#include <foaw.h>
+#include <Roboto_Medium.h>
+
 using namespace vsgImGui;
 
 namespace vsgImGui
@@ -135,8 +138,17 @@ void RenderImGui::_init(
     // size is set to something, to prevent assertions
     // in ImGui::newFrame.
     ImGuiIO& io = ImGui::GetIO();
-    io.DisplaySize.x = imageSize.width;
-    io.DisplaySize.y = imageSize.height;
+    io.DisplaySize.x = (float)imageSize.width;
+    io.DisplaySize.y = (float)imageSize.height;
+    io.BackendFlags |= ImGuiBackendFlags_RendererHasVtxOffset;
+
+    io.ConfigFlags |= ImGuiConfigFlags_DockingEnable; // Enable Docking
+    //io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable; // Enable ViewPort
+    io.FontAllowUserScaling = true;              // activate zoom feature with ctrl + mousewheel
+    io.ConfigWindowsMoveFromTitleBarOnly = true; // can move windows only with titlebar
+#ifdef USE_DECORATIONS_FOR_RESIZE_CHILD_WINDOWS
+    io.ConfigViewportsNoDecoration = false; // toujours mettre une frame au fenetre enfant
+#endif
 
     _device = device;
     _queueFamily = queueFamily;
@@ -165,7 +177,7 @@ void RenderImGui::_init(
         {VK_DESCRIPTOR_TYPE_STORAGE_BUFFER_DYNAMIC, 1000},
         {VK_DESCRIPTOR_TYPE_INPUT_ATTACHMENT, 1000}};
 
-    uint32_t maxSets = 1000 * pool_sizes.size();
+    uint32_t maxSets = 1000U * static_cast<uint32_t>(pool_sizes.size());
     _descriptorPool = vsg::DescriptorPool::create(_device, maxSets, pool_sizes);
 
     init_info.DescriptorPool = *(_descriptorPool);
@@ -174,6 +186,12 @@ void RenderImGui::_init(
     init_info.ImageCount = imageCount;
     init_info.CheckVkResultFn = check_vk_result;
 
+    if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+    {
+        io.BackendFlags |= ImGuiBackendFlags_PlatformHasViewports;
+        io.BackendFlags |= ImGuiBackendFlags_RendererHasViewports;
+    }
+    
     ImGui_ImplVulkan_Init(&init_info, *renderPass);
 
     if (useClearAttachments)
@@ -185,6 +203,18 @@ void RenderImGui::_init(
         VkClearRect rect{VkRect2D{VkOffset2D{0, 0}, VkExtent2D{imageSize.width, imageSize.height}}, 0, 1};
         _clearAttachments = vsg::ClearAttachments::create(vsg::ClearAttachments::Attachments{attachment}, vsg::ClearAttachments::Rects{rect});
     }
+
+    // load memory font file
+    auto fontPtr = ImGui::GetIO().Fonts->AddFontFromMemoryCompressedBase85TTF(FONT_ICON_BUFFER_NAME_RM, 60.0f);
+    if (fontPtr)
+        fontPtr->Scale = 0.25f;
+    static ImFontConfig icons_config;
+    icons_config.MergeMode = true;
+    icons_config.PixelSnapH = true;
+    static ImWchar icons_ranges_NDP[] = {ICON_MIN_FOAW, ICON_MAX_FOAW, 0};
+    fontPtr = ImGui::GetIO().Fonts->AddFontFromMemoryCompressedBase85TTF(FONT_ICON_BUFFER_NAME_FOAW, 60.0f, &icons_config, icons_ranges_NDP);
+    if (fontPtr)
+        fontPtr->Scale = 0.25f;
 }
 
 void RenderImGui::_uploadFonts()

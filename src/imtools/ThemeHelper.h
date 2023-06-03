@@ -43,6 +43,9 @@ private:
 	ImGuiStyle prImGuiStyle;
 
 public:
+    bool init();
+    void unit();
+
 	void Draw();
 	void DrawMenu();
     void ShowCustomImGuiStyleEditor(bool* vOpen, ImGuiStyle* ref = nullptr);
@@ -69,14 +72,7 @@ private:
 	std::string GetStyleColorName(ImGuiCol idx);
 	int GetImGuiColFromName(const std::string& vName);
 
-public: // singleton
-	static ThemeHelper *Instance()
-	{
-		static ThemeHelper _instance;
-		return &_instance;
-	}
-
-protected:
+public:
 	ThemeHelper(); // Prevent construction
 	ThemeHelper(const ThemeHelper&) {}; // Prevent construction by copying
 	ThemeHelper& operator =(const ThemeHelper&) { return *this; }; // Prevent assignment

@@ -168,7 +168,7 @@ void SendEventsToImGui::apply(vsg::ButtonPressEvent& buttonPress)
     if (io.WantCaptureMouse)
     {
         uint32_t button = _convertButton(buttonPress.button);
-        io.AddMousePosEvent(buttonPress.x, buttonPress.y);
+        io.AddMousePosEvent(static_cast<float>(buttonPress.x), static_cast<float>(buttonPress.y));
         io.AddMouseButtonEvent(button, true);
 
         buttonPress.handled = true;
@@ -185,7 +185,7 @@ void SendEventsToImGui::apply(vsg::ButtonReleaseEvent& buttonRelease)
     if ((!_dragging) && io.WantCaptureMouse)
     {
         uint32_t button = _convertButton(buttonRelease.button);
-        io.AddMousePosEvent(buttonRelease.x, buttonRelease.y);
+        io.AddMousePosEvent(static_cast<float>(buttonRelease.x), static_cast<float>(buttonRelease.y));
         io.AddMouseButtonEvent(button, false);
 
         buttonRelease.handled = true;
@@ -199,7 +199,7 @@ void SendEventsToImGui::apply(vsg::MoveEvent& moveEvent)
     if (!_dragging)
     {
         ImGuiIO& io = ImGui::GetIO();
-        io.AddMousePosEvent(moveEvent.x, moveEvent.y);
+        io.AddMousePosEvent(static_cast<float>(moveEvent.x), static_cast<float>(moveEvent.y));
 
         moveEvent.handled = io.WantCaptureMouse;
     }
@@ -299,8 +299,17 @@ void SendEventsToImGui::apply(vsg::KeyReleaseEvent& keyRelease)
 void SendEventsToImGui::apply(vsg::ConfigureWindowEvent& configureWindow)
 {
     ImGuiIO& io = ImGui::GetIO();
-    io.DisplaySize.x = configureWindow.width;
-    io.DisplaySize.y = configureWindow.height;
+    io.DisplaySize.x = static_cast<float>(configureWindow.width);
+    io.DisplaySize.y = static_cast<float>(configureWindow.height);
+
+    if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+    {
+        auto viewport = ImGui::GetWindowViewport();
+        viewport->Pos.x = static_cast<float>(configureWindow.x);
+        viewport->Pos.y = static_cast<float>(configureWindow.y);
+        viewport->Size.x = static_cast<float>(configureWindow.width);
+        viewport->Size.y = static_cast<float>(configureWindow.height);
+    }
 }
 
 void SendEventsToImGui::apply(vsg::FrameEvent& /*frame*/)
@@ -311,5 +320,5 @@ void SendEventsToImGui::apply(vsg::FrameEvent& /*frame*/)
     double dt = std::chrono::duration_cast<std::chrono::duration<double>>(t1 - t0).count();
     t0 = t1;
 
-    io.DeltaTime = dt;
+    io.DeltaTime = static_cast<float>(dt);
 }

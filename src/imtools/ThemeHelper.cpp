@@ -38,14 +38,19 @@ bool ThemeHelper::puUseTextureForShadow = false;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
-ThemeHelper::ThemeHelper()
-{
-	ImGui::CustomStyle::Init();
-	ApplyStyleColorsDefault();
-}
-
+ThemeHelper::ThemeHelper() = default;
 ThemeHelper::~ThemeHelper() = default;
 
+bool ThemeHelper::init()
+{
+    ApplyStyleColorsDefault();
+	return true;
+}
+
+void ThemeHelper::unit()
+{
+
+}
 void ThemeHelper::Draw()
 {
 	if (puShowImGuiStyleEdtor)

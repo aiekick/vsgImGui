@@ -59,7 +59,8 @@ vsg_copy_imgui_headers(
 		${VSGIMGUI_SOURCE_DIR}/src/imtools/LayoutManager.h
 		${VSGIMGUI_SOURCE_DIR}/src/imtools/Messaging.h
 		${VSGIMGUI_SOURCE_DIR}/src/imtools/ThemeHelper.h	
-		${VSGIMGUI_SOURCE_DIR}/src/foaw/foaw.h
+		${VSGIMGUI_SOURCE_DIR}/src/fonts/foaw.h	
+		${VSGIMGUI_SOURCE_DIR}/src/fonts/Roboto_Medium.h
 )
 
 vsg_add_target_clang_format(

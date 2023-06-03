@@ -65,7 +65,7 @@
 // locales string
 #define createDirButtonString ICON_FOAW_PLUS
 #define resetButtonString ICON_FOAW_REPLY
-#define drivesButtonString ICON_FOAW_DATABASE
+#define drivesButtonString ICON_FOAW_HDD_O
 #define editPathButtonString ICON_FOAW_PENCIL
 #define searchString ICON_FOAW_SEARCH
 #define dirEntryString ICON_FOAW_FOLDER
