@@ -17,7 +17,7 @@ limitations under the License.
 #pragma once
 
 #ifdef USE_XML_CONFIG
-#include <ctools/ConfigAbstract.h>
+#include <ConfigAbstract.h>
 #endif // USE_XML_CONFIG
 
 #include <AbstractPane.h>

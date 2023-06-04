@@ -231,6 +231,7 @@ void RenderImGui::_init(
             fontPtr->Scale = 0.30f;
         }
     }
+
 }
 
 void RenderImGui::_uploadFonts()
@@ -260,6 +261,7 @@ void RenderImGui::_uploadFonts()
 static bool ImGui_UpdateMouseCursor()
 {
 #ifdef PLATFORM_WIN32
+    // code from https://github.com/ocornut/imgui/blob/master/backends/imgui_impl_win32.cpp
     ImGuiIO& io = ImGui::GetIO();
     if (io.ConfigFlags & ImGuiConfigFlags_NoMouseCursorChange)
         return false;
