@@ -30,6 +30,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #include <vsgImGui/RenderImGui.h>
 
+#include <unordered_map>
+
 namespace vsgImGui
 {
     class VSGIMGUI_DECLSPEC SendEventsToImGui : public vsg::Inherit<vsg::Visitor, SendEventsToImGui>
@@ -56,9 +58,8 @@ namespace vsgImGui
         void _updateModifier(ImGuiIO& io, vsg::KeyModifier& modifier, bool pressed);
 
         std::chrono::high_resolution_clock::time_point t0;
-        //bool _dragging;
 
-        std::map<vsg::KeySymbol, ImGuiKey> _vsg2imgui;
+        std::unordered_map<vsg::KeySymbol, ImGuiKey> _vsg2imgui;
     };
 } // namespace vsgImGui
 

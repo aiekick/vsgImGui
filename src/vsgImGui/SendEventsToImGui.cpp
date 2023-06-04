@@ -292,15 +292,17 @@ void SendEventsToImGui::apply(vsg::FocusInEvent& focusEvent) {
     
     ImGuiIO& io = ImGui::GetIO();
     io.AddFocusEvent(true);
+    focusEvent.handled = true;
 }
 
 void SendEventsToImGui::apply(vsg::FocusOutEvent& focusEvent) {
     
     ImGuiIO& io = ImGui::GetIO();
     io.AddFocusEvent(false);
+    focusEvent.handled = true;
 }
 
-void SendEventsToImGui::apply(vsg::FrameEvent& /*frame*/)
+void SendEventsToImGui::apply(vsg::FrameEvent& /*frameEvent*/)
 {
     ImGuiIO& io = ImGui::GetIO();
 

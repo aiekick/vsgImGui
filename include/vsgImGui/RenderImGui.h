@@ -35,7 +35,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 namespace vsgImGui
 {
-
     class VSGIMGUI_DECLSPEC RenderImGui : public vsg::Inherit<vsg::Group, RenderImGui>
     {
     public:

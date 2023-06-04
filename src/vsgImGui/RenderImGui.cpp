@@ -140,6 +140,7 @@ void RenderImGui::_init(
     ImGuiIO& io = ImGui::GetIO();
     io.DisplaySize.x = (float)imageSize.width;
     io.DisplaySize.y = (float)imageSize.height;
+    io.BackendFlags |= ImGuiBackendFlags_HasMouseCursors; // We can honor GetMouseCursor() values (optional)
     //io.BackendFlags |= ImGuiBackendFlags_RendererHasVtxOffset;
 
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable; // Enable Docking
