@@ -35,6 +35,10 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <foaw.h>
 #include <Roboto_Medium.h>
 
+#ifdef PLATFORM_WIN32
+#include <Windows.h>
+#endif
+
 using namespace vsgImGui;
 
 namespace vsgImGui
@@ -207,7 +211,9 @@ void RenderImGui::_init(
 
     // load memory font file
     {
-        auto fontPtr = ImGui::GetIO().Fonts->AddFontFromMemoryCompressedBase85TTF(FONT_ICON_BUFFER_NAME_RM, 60.0f);
+        static ImFontConfig icons_config;
+        icons_config.OversampleH = 2;
+        auto fontPtr = ImGui::GetIO().Fonts->AddFontFromMemoryCompressedBase85TTF(FONT_ICON_BUFFER_NAME_RM, 60.0f, &icons_config);
         if (fontPtr)
         {
             fontPtr->Scale = 0.25f;
@@ -251,6 +257,41 @@ void RenderImGui::_uploadFonts()
     ImGui_ImplVulkan_DestroyFontUploadObjects();
 }
 
+static bool ImGui_UpdateMouseCursor()
+{
+#ifdef PLATFORM_WIN32
+    ImGuiIO& io = ImGui::GetIO();
+    if (io.ConfigFlags & ImGuiConfigFlags_NoMouseCursorChange)
+        return false;
+
+    ImGuiMouseCursor imgui_cursor = ImGui::GetMouseCursor();
+    if (imgui_cursor == ImGuiMouseCursor_None || io.MouseDrawCursor)
+    {
+        // Hide OS mouse cursor if imgui is drawing it or if it wants no cursor
+        ::SetCursor(nullptr);
+    }
+    else
+    {
+        // Show OS mouse cursor
+        LPTSTR win32_cursor = IDC_ARROW;
+        switch (imgui_cursor)
+        {
+        case ImGuiMouseCursor_Arrow: win32_cursor = IDC_ARROW; break;
+        case ImGuiMouseCursor_TextInput: win32_cursor = IDC_IBEAM; break;
+        case ImGuiMouseCursor_ResizeAll: win32_cursor = IDC_SIZEALL; break;
+        case ImGuiMouseCursor_ResizeEW: win32_cursor = IDC_SIZEWE; break;
+        case ImGuiMouseCursor_ResizeNS: win32_cursor = IDC_SIZENS; break;
+        case ImGuiMouseCursor_ResizeNESW: win32_cursor = IDC_SIZENESW; break;
+        case ImGuiMouseCursor_ResizeNWSE: win32_cursor = IDC_SIZENWSE; break;
+        case ImGuiMouseCursor_Hand: win32_cursor = IDC_HAND; break;
+        case ImGuiMouseCursor_NotAllowed: win32_cursor = IDC_NO; break;
+        }
+        ::SetCursor(::LoadCursor(nullptr, win32_cursor));
+    }
+#endif // PLATFORM_WIN32
+    return true;
+}
+
 void RenderImGui::accept(vsg::RecordTraversal& rt) const
 {
     auto& commandBuffer = *(rt.getState()->_commandBuffer);
@@ -258,6 +299,7 @@ void RenderImGui::accept(vsg::RecordTraversal& rt) const
 
     // record all the ImGui commands to ImDrawData container
     ImGui_ImplVulkan_NewFrame();
+    ImGui_UpdateMouseCursor();
     ImGui::NewFrame();
     ImGuizmo::BeginFrame();
 
