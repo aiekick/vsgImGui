@@ -57,6 +57,7 @@
 // widget
 // filter combobox width
 // #define FILTER_COMBO_WIDTH 120.0f
+#define IMGUI_BEGIN_COMBO ImGui::BeginContrastedCombo
 // button widget use for compose path
 #define IMGUI_PATH_BUTTON ImGui::ContrastedButton_For_Dialogs
 // standard button

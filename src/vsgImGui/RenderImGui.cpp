@@ -140,12 +140,12 @@ void RenderImGui::_init(
     ImGuiIO& io = ImGui::GetIO();
     io.DisplaySize.x = (float)imageSize.width;
     io.DisplaySize.y = (float)imageSize.height;
-    io.BackendFlags |= ImGuiBackendFlags_RendererHasVtxOffset;
+    //io.BackendFlags |= ImGuiBackendFlags_RendererHasVtxOffset;
 
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable; // Enable Docking
     //io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable; // Enable ViewPort
     io.FontAllowUserScaling = true;              // activate zoom feature with ctrl + mousewheel
-    io.ConfigWindowsMoveFromTitleBarOnly = true; // can move windows only with titlebar
+    io.ConfigWindowsMoveFromTitleBarOnly = false; // can move windows only with titlebar
 #ifdef USE_DECORATIONS_FOR_RESIZE_CHILD_WINDOWS
     io.ConfigViewportsNoDecoration = false; // toujours mettre une frame au fenetre enfant
 #endif
@@ -205,16 +205,25 @@ void RenderImGui::_init(
     }
 
     // load memory font file
-    auto fontPtr = ImGui::GetIO().Fonts->AddFontFromMemoryCompressedBase85TTF(FONT_ICON_BUFFER_NAME_RM, 60.0f);
-    if (fontPtr)
-        fontPtr->Scale = 0.25f;
-    static ImFontConfig icons_config;
-    icons_config.MergeMode = true;
-    icons_config.PixelSnapH = true;
-    static ImWchar icons_ranges_NDP[] = {ICON_MIN_FOAW, ICON_MAX_FOAW, 0};
-    fontPtr = ImGui::GetIO().Fonts->AddFontFromMemoryCompressedBase85TTF(FONT_ICON_BUFFER_NAME_FOAW, 60.0f, &icons_config, icons_ranges_NDP);
-    if (fontPtr)
-        fontPtr->Scale = 0.25f;
+    {
+        auto fontPtr = ImGui::GetIO().Fonts->AddFontFromMemoryCompressedBase85TTF(FONT_ICON_BUFFER_NAME_RM, 60.0f);
+        if (fontPtr)
+        {
+            fontPtr->Scale = 0.25f;
+        }
+    }
+
+    {
+        static ImFontConfig icons_config;
+        icons_config.MergeMode = true;
+        icons_config.PixelSnapH = true;
+        static ImWchar icons_ranges_FOAW[] = {ICON_MIN_FOAW, ICON_MAX_FOAW, 0};
+        auto fontPtr = ImGui::GetIO().Fonts->AddFontFromMemoryCompressedBase85TTF(FONT_ICON_BUFFER_NAME_FOAW, 50.0f, &icons_config, icons_ranges_FOAW);
+        if (fontPtr)
+        {
+            fontPtr->Scale = 0.30f;
+        }
+    }
 }
 
 void RenderImGui::_uploadFonts()
